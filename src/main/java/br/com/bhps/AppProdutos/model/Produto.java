@@ -2,22 +2,39 @@ package br.com.bhps.AppProdutos.model;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "produtos")
 public class Produto {
 
     // Atributos
+    @Id                                             // deixa o id como primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // gera o autoincremento da tabela
     private Long id;
+
+    @Column(nullable = false, unique = true)       // not null e chave única
     private String codigoBarras;
+
+    @Column(nullable = false)    // not null
     private BigDecimal preco;
 
-
+    @Column(nullable = false)    // not null
+    private String nome;
 
     // Contrutores
     public Produto(){}
 
-    public Produto(Long id, String codigoBarras, BigDecimal preco) {
+    public Produto(Long id, String codigoBarras, BigDecimal preco, String nome) {
         this.id = id;
         this.codigoBarras = codigoBarras;
         this.preco = preco;
+        this.nome = nome;
     }
 
     // Funções de alteração (GET e SET)
@@ -45,6 +62,15 @@ public class Produto {
         this.preco = preco;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -69,6 +95,4 @@ public class Produto {
             return false;
         return true;
     }
-
-    
 }

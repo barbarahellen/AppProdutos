@@ -1,9 +1,29 @@
 package br.com.bhps.AppProdutos.model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "estoque")
 public class Estoque {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // relacionamento para linkar o estoque ao produto (1 produto para 1 estoque)
+    @OneToOne(cascade = CascadeType.ALL)    // cascata - se for apagado da tabela de produtos, será apagado da tabela de estoque --> foreign key
+    @JoinColumn(name = "produto_id", referencedColumnName = "id")
     private Produto produto;
+
+    @Column(nullable = false)
     private Integer quantidade;
 
     // Construtores
@@ -15,6 +35,14 @@ public class Estoque {
         this.quantidade = quantidade;
     }
 
+    // pega a qtd de produtos que já tem e soma com o que for adicionado
+    public void adicionarEstoque(int quantidade){
+        this.quantidade += quantidade;
+    }
+
+    public void removerEstoque(int quantidade){
+        this.quantidade -= quantidade;
+    }
 
     // Getters e Setters
     public Long getId() {
