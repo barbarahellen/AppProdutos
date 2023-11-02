@@ -35,15 +35,23 @@ public class ProdutoService implements ProdutoServiceInterface{
 
     @Override
     public Produto update(Produto produto) {
+        // encontrei o produto
         Optional<Produto> upProduto = produtoRepository.findById(produto.getId());
-        return null; 
 
+        // se ele existir, atualizar:
+        if(upProduto.isPresent()){
+            Produto newProduto = upProduto.get();
+            newProduto.setCodigoBarras((produto.getCodigoBarras()));
+            newProduto.setNome(produto.getNome());
+            newProduto.setPreco(produto.getPreco());
+            return produtoRepository.save(newProduto);
+        }
+        return produto;
     }
 
     @Override
     public void delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+       produtoRepository.deleteById(id);
     }
 
 }
